@@ -1,7 +1,6 @@
 package com.example.mediumreactivewebflux5security_db.config.security;
 
 import com.example.mediumreactivewebflux5security_db.config.jwt.JWTUtil;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
