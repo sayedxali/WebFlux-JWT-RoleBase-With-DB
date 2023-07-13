@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <span style='color:white'>Step 3: Provides utility methods for working with JSON Web Tokens (JWTs).</span>
+ */
 @Component
 public class JWTUtil {
 
@@ -27,6 +30,12 @@ public class JWTUtil {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
+    /**
+     * Extracts all claims from a JWT.
+     *
+     * @param token the JWT to extract claims from
+     * @return a Claims object containing all claims from the JWT
+     */
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -35,14 +44,33 @@ public class JWTUtil {
                 .getBody();
     }
 
+    /**
+     * Extracts the username from a JWT.
+     *
+     * @param token the JWT to extract the username from
+     * @return the username extracted from the JWT
+     */
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
+    /**
+     * Generates a JWT for the given user details.
+     *
+     * @param userDetails the user details to generate the JWT for
+     * @return a JWT for the given user details
+     */
     public String generateToken(UserDetails userDetails) {
         return doGenerateToken(new HashMap<>(), userDetails.getUsername());
     }
 
+    /**
+     * Generates a JWT for the given claims and username.
+     *
+     * @param claims   the claims to include in the JWT
+     * @param username the username to include in the JWT
+     * @return a JWT for the given claims and username
+     */
     private String doGenerateToken(Map<String, Object> claims, String username) {
         long expirationTimeLong = Long.parseLong(expirationTime); //in second
         final Date createdDate = new Date();
@@ -55,14 +83,6 @@ public class JWTUtil {
                 .setExpiration(expirationDate)
                 .signWith(key)
                 .compact();
-    }
-
-    public Boolean validateToken(String token) {
-        return !isTokenExpired(token);
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
     }
 
 }

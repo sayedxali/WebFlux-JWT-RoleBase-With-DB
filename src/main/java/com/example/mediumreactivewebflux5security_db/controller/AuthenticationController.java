@@ -14,6 +14,10 @@ import reactor.core.publisher.Mono;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+/**
+ * <span style='color:white'>Step 7: Create a controller for logging in and getting the JWT token.</span>
+ * <p>A Spring {@link RestController} that handles authentication requests. We can also use a service class to make it more readable!</p>
+ */
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -22,6 +26,12 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final ReactiveUserDetailsService userService;
 
+    /**
+     * Handles login requests and returns a JWT token for the authenticated user.
+     *
+     * @param authRequest the {@link AuthRequest} object containing the username and password for the login request
+     * @return a {@link Mono} object containing a {@link ResponseEntity} object with the JWT token for the authenticated user
+     */
     @PostMapping("/login")
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest authRequest) {
         return userService.findByUsername(authRequest.getUsername())
