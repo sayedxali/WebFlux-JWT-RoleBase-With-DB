@@ -29,7 +29,6 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         String username = jwtUtil.extractUsername(token);
         return userDetailsService.findByUsername(username)
                 .map(userDetails -> {
-                    Claims claims = jwtUtil.extractAllClaims(token);
                     Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
                     return new UsernamePasswordAuthenticationToken(
                             username,

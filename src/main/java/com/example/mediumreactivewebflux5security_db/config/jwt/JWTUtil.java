@@ -1,10 +1,10 @@
 package com.example.mediumreactivewebflux5security_db.config.jwt;
 
-import com.example.mediumreactivewebflux5security_db.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +16,10 @@ import java.util.Map;
 @Component
 public class JWTUtil {
 
-    private String secret = "ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave64ByteLength";
-    private String expirationTime = "28800";
+    @Value("${jwt.secret.key}")
+    private String secret;
+    @Value("${jwt.secret.expirationTime}")
+    private String expirationTime;
     private Key key;
 
     @PostConstruct
@@ -35,12 +37,6 @@ public class JWTUtil {
 
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
-    }
-
-    public String generateToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRoles());
-        return doGenerateToken(claims, user.getUsername());
     }
 
     public String generateToken(UserDetails userDetails) {

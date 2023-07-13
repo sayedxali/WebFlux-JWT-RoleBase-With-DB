@@ -33,12 +33,11 @@ public class WebfluxSecurityConfiguration {
                 ).and()
                 .authenticationManager(authenticationManager)
                 .securityContextRepository(securityContextRepository)
-                .authorizeExchange(authorizeExchangeSpec -> {
-                    authorizeExchangeSpec
-                            .pathMatchers("/login").permitAll()
-                            .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                            .anyExchange().authenticated();
-                });
+                .authorizeExchange(authorizeExchangeSpec ->
+                        authorizeExchangeSpec
+                                .pathMatchers("/login").permitAll()
+                                .pathMatchers(HttpMethod.OPTIONS).permitAll()
+                                .anyExchange().authenticated());
         return httpSecurity.build();
     }
 
